@@ -1,0 +1,30 @@
+1.linux服务器oracle安装时采用固定ip，服务器换机房IP地址变化后 pl/sql连接不上数据库,监听启动不起来，数据库启动不起来
+
+解决方案：修改三个文件
+vi /etc/hosts
+( 修改
+
+127.0.0.1 (此处修改为127.0.0.1)              localhost.localdomain localhost
+192.168.10.105 (此处修改为ip变动后的ip地址)            localhost.localdomain(此处修改为linux的uname 名字)
+
+)
+
+vi /etc/sysconfig/network
+(
+NETWORKING=yes
+NETWORKING_IPV6=yes
+HOSTNAME=localhost.localdomain(此处也要和系统的uname保持一致)
+
+)
+cd /$oracle_home/network/admin/listener.ora 
+(
+LISTENER =
+  (DESCRIPTION_LIST =
+    (DESCRIPTION =
+      (ADDRESS = (PROTOCOL = TCP)(HOST =localhost.localdomain)(PORT = 1521)) -----此处的HOST名称也要和uname保持一致
+      (ADDRESS = (PROTOCOL = IPC)(KEY = EXTPROC0))
+    )
+  )
+
+
+) 
