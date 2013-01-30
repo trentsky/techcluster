@@ -4,7 +4,7 @@ var xtcsz = "<c:out value="${WlkpScXtCs.xtcsz}" />";
 if(xtcsid == '1' || xtcsid == '6'){
 	$("select[@name=xtcsz] option").each(function(){
 		if($(this).val() == xtcsz){
-		    $(this).attr("selected",true);
+		    $(this).attr("selected",true); 
 		 }
 	 });
 }
