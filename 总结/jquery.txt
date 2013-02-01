@@ -12,7 +12,7 @@ if(xtcsid == '1' || xtcsid == '6'){
 trÏÔÊ¾Òş²Ø
 function changeStatus(status){
   if(status=='0'){
-	$('#msyj').css("display","none");
+	$('#msyj').css("display","none"); 
 	$('#sphm').css("display","block");
   }else if(status=='1'){
 	$('#msyj').css("display","block");

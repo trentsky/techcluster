@@ -1,6 +1,16 @@
 设置oracle编码
 NLS_LANG=AMERICAN.US7ASCII
 
+涉及配置文件
+/etc/hosts
+/ect/host.config
+
+查看监听状态 lsnrctl status
+启动数据库实例 startup
+
+切换实例名
+export ORACLE_SID=XXXXX
+
 rac tns配置
 HIS =
   (DESCRIPTION =
