@@ -64,7 +64,16 @@ netstat -lnt
 最简单的方法，输入setup，配置界面就出来了～
 或者跟一般Linux一样，在/etc/sysconfig/network-scripts下找到ifcfg-eth0文件，编辑：
 DEVICE=eth0
-IPADDR=192.168.0.254
+BOOTPROTO=none
+HWADDR=00:0C:29:4C:52:7D
+ONBOOT=yes
+NETMASK=255.255.255.0
+IPADDR=192.168.15.11
+GATEWAY=192.168.15.1
+TYPE=Ethernet
+USERCTL=no
+IPV6INIT=no
+PEERDNS=yes
 域名服务器配置文件：/etc/resolv.conf
 
 以下方法，可使修改直接生效：
@@ -95,6 +104,10 @@ mount -t auto /dev/cdrom /mnt/cdrom
 127.0.0.1            localhost.localdomain  localhost
 xxxx.xxxx.xxxx.xxxx  xxxx.com               xxxx
 注:xxxx.xxxx.xxxx.xxxx 是本地IP地址 xxxx.com是本地的域名全名,使用hostname命令取出 xxxx是域名简写 
+
+15、vim安装
+装完vim-common-7.0.109-6.el5.i386.rpm 
+再装vim-enhanced-7.0.109-6.el5.i386.rpm
 
 
 

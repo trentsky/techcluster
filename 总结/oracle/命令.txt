@@ -11,6 +11,18 @@ NLS_LANG=AMERICAN.US7ASCII
 切换实例名
 export ORACLE_SID=XXXXX
 
+设置DISPLAY
+root用户运行：xhost +
+oracle用户：DISPLAY="your ip:1.0"、
+export DISPLAY
+
+配置监听
+netca
+
+新建数据库
+dbca
+
+
 rac tns配置
 HIS =
   (DESCRIPTION =
