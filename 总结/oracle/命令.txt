@@ -103,3 +103,8 @@ from v$locked_object l,dba_objects o ,v$session s
 where l.object_id = o.object_id and l.session_id=s.sid;
 2.杀掉进程：
 alter system kill session 'sid,serial#';
+
+查看oracle rac状态
+crs_stat -t
+启动实例
+srvctl start instance -d jxwlfp -i jxwlfp1

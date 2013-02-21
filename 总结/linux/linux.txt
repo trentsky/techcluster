@@ -109,6 +109,16 @@ xxxx.xxxx.xxxx.xxxx  xxxx.com               xxxx
 装完vim-common-7.0.109-6.el5.i386.rpm 
 再装vim-enhanced-7.0.109-6.el5.i386.rpm
 
+16、scp拷贝
+scp -r 文件夹名 用户名@ip地址：/远程服务器路径
+如 scp -r /soft root@192.168.1.101:/root/soft
+
+17、查看所有80端口使用情况·
+netstat -nlp |grep 80
+如果想看某个端口的信息，使用lsof命令，如：
+sudo lsof -i :80 
+通过netstat -tanp查看某个端口是被哪个进程占用的，然后通过“killall 进程名”干掉该进程就行了
+
 
 
 
