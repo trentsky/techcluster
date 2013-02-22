@@ -83,10 +83,14 @@ maxsize 2048m;
 select 'alter index '|| index_name || ' rebuild tablespace wlkptable;' from dba_indexes where owner='WLKP' and table_name like '%WLKP%'; 
 
 创建用户并指定表空间，授予权限
-create user wlkp identified by wlkp default tablespace WLKPTABLE
+create user wlkp identified by wlkp default tablespace WLKPTABLE temporary tablespace WLKPTEMP
 给用户
 grant connect,resource,dba to wlkp; 
 grant create any table to wlkp;
+
+grant unlimited tablespace to wlkp;--授予不限制的表空间
+grant select any table to wlkp;--授予查询任何表  
+grant select any dictionary to wlkp;--授予 查询 任何字典
 
 导入导出
 imp aichannel/aichannel@HUST fromuser='' touser='' full=y file=d:\data\newsmgnt.dmp ignore=y buffer=500000 feedback=1000
