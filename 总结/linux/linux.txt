@@ -32,6 +32,9 @@ date -s 11:10:00
 
 6、zip解压，压缩文件
 unzip demo.zip
+解压.cpio.gz包
+gunzip 文件名.cpio.gz
+cpio -idmv 文件名.cpio
 
 zip -r demo.zip demo01.txt demo02.txt
 7、CRT上传下载文件

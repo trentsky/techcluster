@@ -8,6 +8,17 @@ NLS_LANG=AMERICAN.US7ASCII
 查看监听状态 lsnrctl status
 启动数据库实例 startup
 
+启动oracle
+su - oracle
+sqlplus system/pwd as sysdba   //进入sql
+startup                                      //启动数据库
+lsnrctl start                               //启动监听
+sqlplus "/as sysdba"
+shutdown immediate;
+startup mount;
+alter database open;
+
+
 切换实例名
 export ORACLE_SID=XXXXX
 
