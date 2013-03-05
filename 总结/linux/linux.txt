@@ -97,7 +97,10 @@ PEERDNS=yes
 12、ssh 超时断开服务器端解决办法
 修改/etc/ssh/sshd_config文件，将ClientAliveInterval 0和ClientAliveCountMax 3的注释符号去掉
 将ClientAliveInterval对应的0改成60
+修改UseDNS=no
+修改TCPKeepAlive yes
 service sshd reload
+service sshd restart
 
 13、挂载光盘
 mount -t auto /dev/cdrom /mnt/cdrom

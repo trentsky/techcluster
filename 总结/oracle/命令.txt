@@ -89,6 +89,8 @@ alter tablespace test_data add
 datafile '/home/app/oracle/oradata/oracle8i/sales02.dbf' size 2048m  
 autoextend on next 32m  
 maxsize 2048m;
+临时表空间创建文件
+ALTER TABLESPACE &tablespace_name ADD TEMPFILE '/oradata/temp01.dbf' SIZE 2G;
 
 修改索引表空间
 select 'alter index '|| index_name || ' rebuild tablespace wlkptable;' from dba_indexes where owner='WLKP' and table_name like '%WLKP%'; 
