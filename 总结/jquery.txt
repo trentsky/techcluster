@@ -9,6 +9,11 @@ if(xtcsid == '1' || xtcsid == '6'){
 	 });
 }
 
+Ìí¼ÓÉ¾³ıÊôĞÔ
+$('#se').attr("disabled","true");
+$('#se').removeAttr("disabled");
+
+
 trÏÔÊ¾Òş²Ø
 function changeStatus(status){
   if(status=='0'){

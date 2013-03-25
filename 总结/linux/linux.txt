@@ -122,8 +122,25 @@ scp -r 文件夹名 用户名@ip地址：/远程服务器路径
 17、查看所有80端口使用情况·
 netstat -nlp |grep 80
 如果想看某个端口的信息，使用lsof命令，如：
-sudo lsof -i :80 
+sudo lsof -i:80 
 通过netstat -tanp查看某个端口是被哪个进程占用的，然后通过“killall 进程名”干掉该进程就行了
+
+18、ssh登陆慢
+可以在/etc/ssh/sshd_config 中添加/修改：UseDNS no  
+19、新建用户
+# groupadd dba
+# useradd -d /home/oracle -g dba oracle
+# mkdir -p /home/oracle/oradata
+# chown –R oracle:dba /home/oracle/oradata
+# passwd oracle
+19、权限
+每種身份(owner/group/others)各自的三個權限(r/w/x)分數是需要累加的，例如當權限為： [-rwxrwx---] 分數則是：
+ owner = rwx = 4+2+1 = 7
+ group = rwx = 4+2+1 = 7
+ others= --- = 0+0+0 = 0
+
+
+
 
 
 
