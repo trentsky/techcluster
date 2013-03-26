@@ -1,0 +1,9 @@
+1、格式换
+   bin/hadoop namenode -format
+2、本地和文件系统互相拷贝
+   bin/hadoop fs -put conf input
+   bin/hadoop fs -get output output 
+3、运行mapreduce程序
+   bin/hadoop jar hadoop-examples-*.jar grep input output 'dfs[a-z.]+'
+4、查看文件系统目录
+   bin/hadoop fs -ls /
