@@ -139,6 +139,11 @@ sudo lsof -i:80
  group = rwx = 4+2+1 = 7
  others= --- = 0+0+0 = 0
 
+ 20、设置NTP时钟同步
+dongguo@hadoop-master:~$ sudo /etc/init.d/ntp start
+dongguo@hadoop-node-1:~$ sudo ntpdate hadoop-master
+dongguo@hadoop-node-2:~$ sudo ntpdate hadoop-master
+
 
 
 
