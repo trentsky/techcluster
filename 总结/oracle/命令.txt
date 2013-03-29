@@ -1,127 +1,158 @@
-设置oracle编码
-NLS_LANG=AMERICAN.US7ASCII
+1、设置oracle编码
+	NLS_LANG=AMERICAN.US7ASCII
 
-涉及配置文件
-/etc/hosts
-/ect/host.config
+2、涉及配置文件
+	/etc/hosts
+	/ect/host.config
 
-查看监听状态 lsnrctl status
-启动数据库实例 startup
+3、查看监听状态 lsnrctl status
+4、启动数据库实例 startup
 
-启动oracle
-su - oracle
-sqlplus system/pwd as sysdba   //进入sql
-startup                                      //启动数据库
-lsnrctl start                               //启动监听
-sqlplus "/as sysdba"
-shutdown immediate;
-startup mount;
-alter database open;
-
-
-切换实例名
-export ORACLE_SID=XXXXX
-
-设置DISPLAY
-root用户运行：xhost +
-oracle用户：DISPLAY="your ip:1.0"、
-export DISPLAY
-
-配置监听
-netca
-
-新建数据库
-dbca
+5、启动oracle
+	su - oracle
+	sqlplus system/pwd as sysdba   //进入sql
+	startup                                      //启动数据库
+	lsnrctl start                               //启动监听
+	sqlplus "/as sysdba"
+	shutdown immediate;
+	startup mount;
+	alter database open;
 
 
-rac tns配置
-HIS =
-  (DESCRIPTION =
-  (load_balance = yes)
-  (failover = on)
-    (ADDRESS_LIST =
-      (ADDRESS = (PROTOCOL = TCP)(HOST = 192.168.48.22)(PORT = 1521))
-      (ADDRESS = (PROTOCOL = TCP)(HOST = 192.168.48.23)(PORT = 1521))  
-    )
-    (CONNECT_DATA =
-        (SERVICE_NAME = hisdb)
-        (SERVER = DEDICATED)
-        (failover_mode=(type=select)(method=basic)(retries=20)(delay=20))
-    )
-  )
+6、切换实例名
+	export ORACLE_SID=XXXXX
 
-查询表空间
- SELECT TABLESPACE_NAME "表空间",
-       TO_CHAR(ROUND(BYTES / 1024, 2), '99990.00') || 'G' "实有",
-       TO_CHAR(ROUND((BYTES - FREE) / 1024, 2), '99990.00') || 'G' "使用",
-       TO_CHAR(ROUND(FREE / 1024, 2), '99990.00') || 'G' "现有",
-       TO_CHAR(ROUND(10000 * USED / BYTES) / 100, '99990.00') || '%' "比例"
-  FROM (SELECT A.TABLESPACE_NAME TABLESPACE_NAME,
-               FLOOR(A.BYTES / (1024 * 1024)) BYTES,
-               FLOOR(B.FREE / (1024 * 1024)) FREE,
-               FLOOR((A.BYTES - B.FREE) / (1024 * 1024)) USED
-          FROM (SELECT TABLESPACE_NAME TABLESPACE_NAME, SUM(BYTES) BYTES
-                  FROM DBA_DATA_FILES
-                 GROUP BY TABLESPACE_NAME) A,
-               (SELECT TABLESPACE_NAME TABLESPACE_NAME, SUM(BYTES) FREE
-                  FROM DBA_FREE_SPACE
-                 GROUP BY TABLESPACE_NAME) B
-         WHERE A.TABLESPACE_NAME = B.TABLESPACE_NAME)
-  --WHERE TABLESPACE_NAME LIKE 'CDR%'
- ORDER BY FLOOR(10000 * USED / BYTES) DESC; 
-创建临时表空间
-create temporary tablespace test_temp
-tempfile 'E:\oracle\product\10.2.0\oradata\testserver\test_temp01.dbf'
-size 32m
-autoextend on
-next 32m maxsize 2048m
-extent management local;
-创建数据表空间
-create tablespace test_data
-logging
-datafile 'E:\oracle\product\10.2.0\oradata\testserver\test_data01.dbf'
-size 32m
-autoextend on
-next 32m maxsize 2048m
-extent management local;
-为表空间增加数据文件
-alter tablespace test_data add  
-datafile '/home/app/oracle/oradata/oracle8i/sales02.dbf' size 2048m  
-autoextend on next 32m  
-maxsize 2048m;
-临时表空间创建文件
-ALTER TABLESPACE &tablespace_name ADD TEMPFILE '/oradata/temp01.dbf' SIZE 2G;
+7、设置DISPLAY
+	root用户运行：xhost +
+	oracle用户：DISPLAY="your ip:1.0"、
+	export DISPLAY
 
-修改索引表空间
-select 'alter index '|| index_name || ' rebuild tablespace wlkptable;' from dba_indexes where owner='WLKP' and table_name like '%WLKP%'; 
+8、配置监听
+	netca
 
-创建用户并指定表空间，授予权限
-create user wlkp identified by wlkp default tablespace WLKPTABLE temporary tablespace WLKPTEMP
-给用户
-grant connect,resource,dba to wlkp; 
-grant create any table to wlkp;
+9、新建数据库
+	dbca
 
-grant unlimited tablespace to wlkp;--授予不限制的表空间
-grant select any table to wlkp;--授予查询任何表  
-grant select any dictionary to wlkp;--授予 查询 任何字典
 
-导入导出
-imp aichannel/aichannel@HUST fromuser='' touser='' full=y file=d:\data\newsmgnt.dmp ignore=y buffer=500000 feedback=1000
-exp wlkp/wlkpnetp@wlkpzs file='' log='' owner='' buffer=100000 feedback=1000
-imp wlkpkf/wlkp@wlkp_nb fromuser='wlkp' touser='wlkpkf' table='wlkp_js_yd_data' file='E:\jdc.dpm' ignore=y buffer=500000 feedback=1000
+10、rac tns配置
+	HIS =
+	  (DESCRIPTION =
+	  (load_balance = yes)
+	  (failover = on)
+	    (ADDRESS_LIST =
+	      (ADDRESS = (PROTOCOL = TCP)(HOST = 192.168.48.22)(PORT = 1521))
+	      (ADDRESS = (PROTOCOL = TCP)(HOST = 192.168.48.23)(PORT = 1521))  
+	    )
+	    (CONNECT_DATA =
+		(SERVICE_NAME = hisdb)
+		(SERVER = DEDICATED)
+		(failover_mode=(type=select)(method=basic)(retries=20)(delay=20))
+	    )
+	  )
 
-表分析(表分析后腰重建索引)
-analyze table tablename compute statistics for table for all indexes for all columns
-alter index index_name rebuild tablespace tablespace_name
+11、查询表空间
+	 1)SELECT TABLESPACE_NAME "表空间",
+	       TO_CHAR(ROUND(BYTES / 1024, 2), '99990.00') || 'G' "实有",
+	       TO_CHAR(ROUND((BYTES - FREE) / 1024, 2), '99990.00') || 'G' "使用",
+	       TO_CHAR(ROUND(FREE / 1024, 2), '99990.00') || 'G' "现有",
+	       TO_CHAR(ROUND(10000 * USED / BYTES) / 100, '99990.00') || '%' "比例"
+	  FROM (SELECT A.TABLESPACE_NAME TABLESPACE_NAME,
+		       FLOOR(A.BYTES / (1024 * 1024)) BYTES,
+		       FLOOR(B.FREE / (1024 * 1024)) FREE,
+		       FLOOR((A.BYTES - B.FREE) / (1024 * 1024)) USED
+		  FROM (SELECT TABLESPACE_NAME TABLESPACE_NAME, SUM(BYTES) BYTES
+			  FROM DBA_DATA_FILES
+			 GROUP BY TABLESPACE_NAME) A,
+		       (SELECT TABLESPACE_NAME TABLESPACE_NAME, SUM(BYTES) FREE
+			  FROM DBA_FREE_SPACE
+			 GROUP BY TABLESPACE_NAME) B
+		 WHERE A.TABLESPACE_NAME = B.TABLESPACE_NAME)
+	  --WHERE TABLESPACE_NAME LIKE 'CDR%'
+	 ORDER BY FLOOR(10000 * USED / BYTES) DESC;
+	
+	2)查看临时表空间
+	SELECT D.TABLESPACE_NAME,
+	       SPACE "SUM_SPACE(M)",
+	       BLOCKS SUM_BLOCKS,
+	       USED_SPACE "USED_SPACE(M)",
+	       ROUND(NVL(USED_SPACE, 0) / SPACE * 100, 2) "USED_RATE(%)",
+	       NVL(FREE_SPACE, 0) "FREE_SPACE(M)"
+	  FROM (SELECT TABLESPACE_NAME,
+		       ROUND(SUM(BYTES) / (1024 * 1024), 2) SPACE,
+		       SUM(BLOCKS) BLOCKS
+		  FROM DBA_TEMP_FILES
+		 GROUP BY TABLESPACE_NAME) D,
+	       (SELECT TABLESPACE_NAME,
+		       ROUND(SUM(BYTES_USED) / (1024 * 1024), 2) USED_SPACE,
+		       ROUND(SUM(BYTES_FREE) / (1024 * 1024), 2) FREE_SPACE
+		  FROM V$TEMP_SPACE_HEADER
+		 GROUP BY TABLESPACE_NAME) F
+	 WHERE D.TABLESPACE_NAME = F.TABLESPACE_NAME(+)
+	 3)查看用户表默认表空间、临时表空间
+	 select t.username,t.default_tablespace,t.temporary_tablespace from dba_users t where username='WLKP';
+12、临时表空间
+	1）创建临时表空间
+		create temporary tablespace test_temp
+			tempfile 'E:\oracle\product\10.2.0\oradata\testserver\test_temp01.dbf'
+			size 32m
+			autoextend on
+			next 32m maxsize 2048m
+			extent management local;
+	2)修改用户临时表空间
+		ALTER USER username TEMPORARY TABLESPACE new_tablespace_name;
+	3）删除表空间
+	drop tablespace mytbs02 including contents and datafiles cascade constraints;
 
-1.查询哪些对象被锁：
-select object_name,machine,s.sid,s.serial#
-from v$locked_object l,dba_objects o ,v$session s
-where l.object_id = o.object_id and l.session_id=s.sid;
-2.杀掉进程：
-alter system kill session 'sid,serial#';
+13、创建数据表空间
+	create tablespace test_data
+	logging
+	datafile 'E:\oracle\product\10.2.0\oradata\testserver\test_data01.dbf'
+	size 32m
+	autoextend on
+	next 32m maxsize 2048m
+	extent management local;
+14、为表空间增加数据文件
+	alter tablespace test_data add  
+	datafile '/home/app/oracle/oradata/oracle8i/sales02.dbf' size 2048m  
+	autoextend on next 32m  
+	maxsize 2048m;
+15、临时表空间增加文件
+	ALTER TABLESPACE &tablespace_name ADD TEMPFILE '/oradata/temp01.dbf' SIZE 2G;
+16、使表空间脱机或联机
+	alter talespace wlkptables online/offline
 
-查看oracle rac状态
-crs_stat -t
-启动实例
-srvctl start instance -d jxwlfp -i jxwlfp1
+
+17、修改索引表空间
+	select 'alter index '|| index_name || ' rebuild tablespace wlkptable;' from dba_indexes where owner='WLKP' and table_name like '%WLKP%'; 
+
+18、创建用户并指定表空间，授予权限
+	create user wlkp identified by wlkp default tablespace WLKPTABLE temporary tablespace WLKPTEMP;
+	grant connect,resource,dba to wlkp; 
+	grant create any table to wlkp;
+
+	grant unlimited tablespace to wlkp;--授予不限制的表空间
+	grant select any table to wlkp;--授予查询任何表  
+	grant select any dictionary to wlkp;--授予 查询 任何字典
+
+19、导入导出
+	imp aichannel/aichannel@HUST fromuser='' touser='' full=y file=d:\data\newsmgnt.dmp ignore=y buffer=500000 feedback=1000
+	exp wlkp/wlkpnetp@wlkpzs file='' log='' owner='' buffer=100000 feedback=1000
+	imp wlkpkf/wlkp@wlkp_nb fromuser='wlkp' touser='wlkpkf' table='wlkp_js_yd_data' file='E:\jdc.dpm' ignore=y buffer=500000 feedback=1000
+
+20、表分析(表分析后腰重建索引)
+	analyze table tablename compute statistics for table for all indexes for all columns
+	alter index index_name rebuild tablespace tablespace_name
+21、删除oracle锁
+	1).查询哪些对象被锁：
+	select object_name,machine,s.sid,s.serial#
+	from v$locked_object l,dba_objects o ,v$session s
+	where l.object_id = o.object_id and l.session_id=s.sid;
+	2).杀掉进程：
+	alter system kill session 'sid,serial#';
+
+22、查看oracle rac状态
+	crs_stat -t
+23、启动rac实例
+	srvctl start instance -d jxwlfp -i jxwlfp1
+24、闪回误删除的数据
+	insert into jrtsch.tuserinfo ( select * from jrtsch.tuserinfo as of timestamp to_timestamp('2011-04-29 19:00','YYYY-MM-DD HH24:MI'));

@@ -1,0 +1,17 @@
+1、Can't connect to MySQL server on 'localhost' (10061)解决方法
+	# /etc/init.d/mysqld stop
+	# mysqld_safe --user=mysql --skip-grant-tables --skip-networking &
+	# mysql -u root mysql
+	mysql> UPDATE user SET Password=PASSWORD('123456') where USER='root';
+	mysql> FLUSH PRIVILEGES;
+	mysql> quit
+
+	# /etc/init.d/mysqld restart
+	# mysql -uroot -p
+	Enter password: <输入新设的密码newpassword>
+2、打开远程访问
+	所有用户：GRANT ALL PRIVILEGES ON *.* TO 'hiveuser'@'%' IDENTIFIED BY '123456' WITH GRANT OPTION;
+	某个用户：GRANT ALL PRIVILEGES ON *.* TO 'jack'@’10.10.50.127’ IDENTIFIED BY '654321' WITH GRANT OPTION;
+	执行完后运行：FLUSH PRIVILEGES;
+
+
