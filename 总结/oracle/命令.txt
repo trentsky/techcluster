@@ -156,3 +156,9 @@
 	srvctl start instance -d jxwlfp -i jxwlfp1
 24、闪回误删除的数据
 	insert into jrtsch.tuserinfo ( select * from jrtsch.tuserinfo as of timestamp to_timestamp('2011-04-29 19:00','YYYY-MM-DD HH24:MI'));
+25、oracle导出txt
+	spool c:\tbdata.txt
+	set heading off
+	set feedback off
+	select * from tbname;
+	spool off; 

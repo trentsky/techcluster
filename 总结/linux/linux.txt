@@ -137,18 +137,36 @@ sudo lsof -i:80
 # mkdir -p /home/oracle/oradata
 # chown –R oracle:dba /home/oracle/oradata
 # passwd oracle
+
 19、权限
 每種身份(owner/group/others)各自的三個權限(r/w/x)分數是需要累加的，例如當權限為： [-rwxrwx---] 分數則是：
  owner = rwx = 4+2+1 = 7
  group = rwx = 4+2+1 = 7
  others= --- = 0+0+0 = 0
 
- 20、设置NTP时钟同步
+20、设置NTP时钟同步
 dongguo@hadoop-master:~$ sudo /etc/init.d/ntpd start
 dongguo@hadoop-node-1:~$ sudo ntpdate hadoop-master
 dongguo@hadoop-node-2:~$ sudo ntpdate hadoop-master
-
-
+21、find查找
+find . -mtime -2 -print  查找本目录下2天内修改过的文件
+find . -mtime +2 -print  查找本目录下2天前修改过的文件
+find . -cmin -60 -print  查找本目录下1小时内修改过的文件
+find . -size +10000000c -print 查找本目录下文件大小大于10M的文件
+find . -name "startW*" -exec sh {} \; 查找以"startW"开头的文件 并且只需它
+22、awk，sed
+awk '{print $1,$2}' fp.txt | sed -n '2p' 显示文件的第二行的第1,2列
+23、源码安装软件
+1）解压源码包并切换到源码包内
+2）分别执行如下命令
+    #./configure --prefix=/opt/gaim （安装目录）
+    #make
+    #make install
+3）安装完毕，应清除编译过程中产生的临时文件和配置过程中产生的文件。键入如下命令：
+    #make clean
+    #make distclean
+24、为用户增加另一个组
+usermod -a -G wheel lich0079（-a 表示append追加）
 
 
 

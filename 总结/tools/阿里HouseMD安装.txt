@@ -1,0 +1,32 @@
+阿里HouseMD安装
+
+1、安装jenv（参考：https://github.com/linux-china/jenv）
+	curl -s get.jvmtool.mvnsearch.org | bash
+2、安装sbt
+	jenv install sbt
+3、安装依赖包
+	rpm -Uvh curl-devel....
+4、安装git
+	1)wget http://down1.chinaunix.net/distfiles/git-1.7.12.4.tar.gz
+	2)tar -zxvf git-1.7.12.4.tar.gz
+	3)cd git-1.7.12.4
+	4)./configure –prefix=/usr/local/git
+	5)make
+	6)make install
+	7)make clean
+	8)make distclean
+	9)添加git环境表
+	  vi /etc/profile 添加：export PATH=/usr/local/git/bin:/usr/local/git/libexec/git-core:$PATH
+5、安装housemd（参考：https://github.com/zhongl/housemd/wiki/UserGuideCN）
+	1)env GIT_SSL_NO_VERIFY=true git clone https://github.com/zhongl/HouseMD.git housemd （注：切换到工程部署的用户下，
+		运行时前面必须加上env GIT_SSL_NO_VERIFY=true。参考：http://stackoverflow.com/questions/3777075/ssl-certificate-rejected-trying-to-access-github-over-https-behind-firewall）
+	2)cd housemd
+	3)sbt proguard
+6、UserGuideCN
+	https://github.com/zhongl/housemd/wiki/UserGuideCN
+7、实例
+	http://iamzhongyong.iteye.com/blog/1832396
+
+
+	
+
