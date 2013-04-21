@@ -55,7 +55,7 @@
 	       TO_CHAR(ROUND(BYTES / 1024, 2), '99990.00') || 'G' "实有",
 	       TO_CHAR(ROUND((BYTES - FREE) / 1024, 2), '99990.00') || 'G' "使用",
 	       TO_CHAR(ROUND(FREE / 1024, 2), '99990.00') || 'G' "现有",
-	       TO_CHAR(ROUND(10000 * USED / BYTES) / 100, '99990.00') || '%' "比例"
+	       TO_CHAR(ROUND(10000 * USED / BYTES) / 100, '99990.00') || '%' "使用率比例"
 	  FROM (SELECT A.TABLESPACE_NAME TABLESPACE_NAME,
 		       FLOOR(A.BYTES / (1024 * 1024)) BYTES,
 		       FLOOR(B.FREE / (1024 * 1024)) FREE,

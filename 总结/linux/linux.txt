@@ -1,172 +1,178 @@
 1、安装vmware tool
-mount /dev/cdrom /mnt/
-cp VMwareTools-6.0.2-59824.tar.gz /tmp
-tar -zxvf VMwareTools-6.0.2-59824.tar.gz
-./vmware-install.pl
+	mount /dev/cdrom /mnt/
+	cp VMwareTools-6.0.2-59824.tar.gz /tmp
+	tar -zxvf VMwareTools-6.0.2-59824.tar.gz
+	./vmware-install.pl
 2、安装java
-chmod a+x jdk-6u26-linux-i586-rpm.bin
-用文本编辑器打开/etc/profile 
-在profile文件末尾加入： 
-export JAVA_HOME=/usr/share/jdk1.6.0_14 
-export PATH=$JAVA_HOME/bin:$PATH 
-export CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar
-source /ect/profile
+	1)chmod a+x jdk-6u26-linux-i586-rpm.bin
+	   用文本编辑器打开/etc/profile 
+           在profile文件末尾加入： 
+	   export JAVA_HOME=/usr/share/jdk1.6.0_14 
+	   export PATH=$JAVA_HOME/bin:$PATH 
+	   export CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar
+	   source /ect/profile
+	 2)卸载老版本jdk
+	   rpm –aq |grep gcj
+	   rpm -e –nodeps java-1.4.2-gcj-compat-src-1.4.2.0-40jpp.115
+
 3、联网
-1）出现ping: unknown host www.baidu.com
-如果确定网络没问题的情况下, 可以通过如下步骤寻找解决办法:
-1) 确定设置了域名服务器, 没有的话, 建议设置Google的公共DNS服务, 它应该不会出问题的
-# cat /etc/resolv.conf
--------------------------------------------------------------------
-nameserver 8.8.8.8
-nameserver 8.8.4.4
+	1)出现ping: unknown host www.baidu.com
+	如果确定网络没问题的情况下, 可以通过如下步骤寻找解决办法:
+	2) 确定设置了域名服务器, 没有的话, 建议设置Google的公共DNS服务, 它应该不会出问题的
+	# cat /etc/resolv.conf
+	-------------------------------------------------------------------
+	nameserver 8.8.8.8
+	nameserver 8.8.4.4
 
 4、防火墙
-1.)开放端口
-/etc/sysconfig/iptables
-2.)查看防火墙状态
-chkconfig iptables --list
-3.) 重启iptalbes服务：/etc/init.d/iptables restart
+	1)开放端口
+	/etc/sysconfig/iptables
+	2)查看防火墙状态
+	chkconfig iptables --list
+	3) 重启iptalbes服务：/etc/init.d/iptables restart
 
 5、修复系统时间
-date -s 
-按字符串方式修改时间
-可以只修改日期,不修改时间,输入: date -s 2007-08-03
-只修改时间,输入:date -s 14:15:00
-同时修改日期时间,注意要加双引号,日期与时间之间有一空格,输入:date -s "2007-08-03 14:15:00"
+	date -s 
+	按字符串方式修改时间
+	可以只修改日期,不修改时间,输入: date -s 2007-08-03
+	只修改时间,输入:date -s 14:15:00
+	同时修改日期时间,注意要加双引号,日期与时间之间有一空格,输入:date -s "2007-08-03 14:15:00"
 
 6、zip解压，压缩文件
-unzip demo.zip
-解压.cpio.gz包
-gunzip 文件名.cpio.gz
-cpio -idmv 文件名.cpio
-
-zip -r demo.zip demo01.txt demo02.txt
+	unzip demo.zip
+	解压.cpio.gz包
+	gunzip 文件名.cpio.gz
+	cpio -idmv 文件名.cpio
+	zip -r demo.zip demo01.txt demo02.txt
 7、CRT上传下载文件
-rz 上传；sz 下载
+	rz 上传；sz 下载
 
 8、开启telnet
-1.)检测telnet、telnet-server的rpm是否安装
-rpm -qa telnet
-2.)安装telnet
-apm -ivh telnet-server*
-3.)修改telnet配置文件
-vim /etc/xinetd.d/telnet 修改disable=no
-4.)重启telnet守护进程
-service xinetd restart
-5.)telnet以root用户登录
-有两种方法：
-　　(1)＃mv /etc/securetty /etc/securetty.bak
-　　或者
-　　(2)＃vi /etc/pam.d/login
-　　把auth required pam_securetty.so这一行注释掉
+	1)检测telnet、telnet-server的rpm是否安装
+	rpm -qa telnet
+	2)安装telnet
+	apm -ivh telnet-server*
+	3)修改telnet配置文件
+	vim /etc/xinetd.d/telnet 修改disable=no
+	4)重启telnet守护进程
+	service xinetd restart
+	5)telnet以root用户登录
+	有两种方法：
+	　　(1)＃mv /etc/securetty /etc/securetty.bak
+	　　或者
+	　　(2)＃vi /etc/pam.d/login
+	　　把auth required pam_securetty.so这一行注释掉
 
 9、安装启动ftp服务：
-1.)yum install vsftpd
-2.)在/etc/rc.d/init.d/目录下：命令  service vsftp start
+	1)yum install vsftpd
+	2)在/etc/rc.d/init.d/目录下：命令  service vsftp start
 
 10、查看端口是否开放
-netstat -lnt
+	netstat -lnt
 
 11、最常用的给网卡配置ip的 
-最简单的方法，输入setup，配置界面就出来了～
-或者跟一般Linux一样，在/etc/sysconfig/network-scripts下找到ifcfg-eth0文件，编辑：
-DEVICE=eth0
-BOOTPROTO=none
-HWADDR=00:0C:29:4C:52:7D
-ONBOOT=yes
-NETMASK=255.255.255.0
-IPADDR=192.168.15.11
-GATEWAY=192.168.15.1
-TYPE=Ethernet
-USERCTL=no
-IPV6INIT=no
-PEERDNS=yes
-域名服务器配置文件：/etc/resolv.conf
+	最简单的方法，输入setup，配置界面就出来了～
+	或者跟一般Linux一样，在/etc/sysconfig/network-scripts下找到ifcfg-eth0文件，编辑：
+	DEVICE=eth0
+	BOOTPROTO=none
+	HWADDR=00:0C:29:4C:52:7D
+	ONBOOT=yes
+	NETMASK=255.255.255.0
+	IPADDR=192.168.15.11
+	GATEWAY=192.168.15.1
+	TYPE=Ethernet
+	USERCTL=no
+	IPV6INIT=no
+	PEERDNS=yes
+	域名服务器配置文件：/etc/resolv.conf
 
-以下方法，可使修改直接生效：
-修改ip地址
-# ifconfig eth0 192.168.0.20 netmask 255.255.255.0
+	以下方法，可使修改直接生效：
+	修改ip地址
+	# ifconfig eth0 192.168.0.20 netmask 255.255.255.0
 
-修改default gateway
-# route add default gw 192.168.0.254
+	修改default gateway
+	# route add default gw 192.168.0.254
 
-修改dns
-修改/etc/resolv.conf
+	修改dns
+	修改/etc/resolv.conf
 
-修改host name
-# hostname fc2
-启动生效:
-修改/etc/sysconfig/network
+	修改host name
+	# hostname fc2
+	启动生效:
+	修改/etc/sysconfig/network
 
 12、ssh 超时断开服务器端解决办法
-修改/etc/ssh/sshd_config文件，将ClientAliveInterval 0和ClientAliveCountMax 3的注释符号去掉
-将ClientAliveInterval对应的0改成60
-修改UseDNS=no
-修改TCPKeepAlive yes
-service sshd reload
-service sshd restart
+	修改/etc/ssh/sshd_config文件，将ClientAliveInterval 0和ClientAliveCountMax 3的注释符号去掉
+	将ClientAliveInterval对应的0改成60
+	修改UseDNS=no
+	修改TCPKeepAlive yes
+	service sshd reload
+	service sshd restart
 
 13、挂载光盘
-mount -t auto /dev/cdrom /mnt/cdrom
+	mount -t auto /dev/cdrom /mnt/cdrom
 
 14、修改DBCP
-以ROOT用户进入,修改/ETC/HOSTS文件的以下内容:
-127.0.0.1            localhost.localdomain  localhost
-xxxx.xxxx.xxxx.xxxx  xxxx.com               xxxx
-注:xxxx.xxxx.xxxx.xxxx 是本地IP地址 xxxx.com是本地的域名全名,使用hostname命令取出 xxxx是域名简写 
+	以ROOT用户进入,修改/ETC/HOSTS文件的以下内容:
+	127.0.0.1            localhost.localdomain  localhost
+	xxxx.xxxx.xxxx.xxxx  xxxx.com               xxxx
+	注:xxxx.xxxx.xxxx.xxxx 是本地IP地址 xxxx.com是本地的域名全名,使用hostname命令取出 xxxx是域名简写 
 
 15、vim安装
-装完vim-common-7.0.109-6.el5.i386.rpm 
-再装vim-enhanced-7.0.109-6.el5.i386.rpm
+	装完vim-common-7.0.109-6.el5.i386.rpm 
+	再装vim-enhanced-7.0.109-6.el5.i386.rpm
 
 16、scp拷贝
-scp -r 文件夹名 用户名@ip地址：/远程服务器路径
-如 scp -r /soft root@192.168.1.101:/root/soft
+	scp -r 文件夹名 用户名@ip地址：/远程服务器路径
+	如 scp -r /soft root@192.168.1.101:/root/soft
 
 17、查看所有80端口使用情况·
-netstat -nlp |grep 80
-如果想看某个端口的信息，使用lsof命令，如：
-sudo lsof -i:80 
-通过netstat -tanp查看某个端口是被哪个进程占用的，然后通过“killall 进程名”干掉该进程就行了
+	netstat -nlp |grep 80
+	如果想看某个端口的信息，使用lsof命令，如：
+	sudo lsof -i:80 
+	通过netstat -tanp查看某个端口是被哪个进程占用的，然后通过“killall 进程名”干掉该进程就行了
 
 18、ssh登陆慢
-可以在/etc/ssh/sshd_config 中添加/修改：UseDNS no  
+	可以在/etc/ssh/sshd_config 中添加/修改：UseDNS no  
 19、新建用户
-# groupadd dba
-# useradd -d /home/oracle -g dba oracle
-# mkdir -p /home/oracle/oradata
-# chown –R oracle:dba /home/oracle/oradata
-# passwd oracle
+	# groupadd dba
+	# useradd -d /home/oracle -g dba oracle
+	# mkdir -p /home/oracle/oradata
+	# chown –R oracle:dba /home/oracle/oradata
+	# passwd oracle
 
 19、权限
-每種身份(owner/group/others)各自的三個權限(r/w/x)分數是需要累加的，例如當權限為： [-rwxrwx---] 分數則是：
- owner = rwx = 4+2+1 = 7
- group = rwx = 4+2+1 = 7
- others= --- = 0+0+0 = 0
+	每種身份(owner/group/others)各自的三個權限(r/w/x)分數是需要累加的，例如當權限為： [-rwxrwx---] 分數則是：
+	 owner = rwx = 4+2+1 = 7
+	 group = rwx = 4+2+1 = 7
+	 others= --- = 0+0+0 = 0
 
 20、设置NTP时钟同步
-dongguo@hadoop-master:~$ sudo /etc/init.d/ntpd start
-dongguo@hadoop-node-1:~$ sudo ntpdate hadoop-master
-dongguo@hadoop-node-2:~$ sudo ntpdate hadoop-master
+	dongguo@hadoop-master:~$ sudo /etc/init.d/ntpd start
+	dongguo@hadoop-node-1:~$ sudo ntpdate hadoop-master
+	dongguo@hadoop-node-2:~$ sudo ntpdate hadoop-master
 21、find查找
-find . -mtime -2 -print  查找本目录下2天内修改过的文件
-find . -mtime +2 -print  查找本目录下2天前修改过的文件
-find . -cmin -60 -print  查找本目录下1小时内修改过的文件
-find . -size +10000000c -print 查找本目录下文件大小大于10M的文件
-find . -name "startW*" -exec sh {} \; 查找以"startW"开头的文件 并且只需它
+	find . -mtime -2 -print  查找本目录下2天内修改过的文件
+	find . -mtime +2 -print  查找本目录下2天前修改过的文件
+	find . -cmin -60 -print  查找本目录下1小时内修改过的文件
+	find . -size +10000000c -print 查找本目录下文件大小大于10M的文件
+	find . -name "startW*" -exec sh {} \; 查找以"startW"开头的文件 并且只需它
 22、awk，sed
-awk '{print $1,$2}' fp.txt | sed -n '2p' 显示文件的第二行的第1,2列
+	awk '{print $1,$2}' fp.txt | sed -n '2p' 显示文件的第二行的第1,2列
+	cat sc_fp.txt | awk '{print $1}'| tr "\n" "," 数据库去列
 23、源码安装软件
-1）解压源码包并切换到源码包内
-2）分别执行如下命令
-    #./configure --prefix=/opt/gaim （安装目录）
-    #make
-    #make install
-3）安装完毕，应清除编译过程中产生的临时文件和配置过程中产生的文件。键入如下命令：
-    #make clean
-    #make distclean
+	1）解压源码包并切换到源码包内
+	2）分别执行如下命令
+	    #./configure --prefix=/opt/gaim （安装目录）
+	    #make
+	    #make install
+	3）安装完毕，应清除编译过程中产生的临时文件和配置过程中产生的文件。键入如下命令：
+	    #make clean
+	    #make distclean
 24、为用户增加另一个组
-usermod -a -G wheel lich0079（-a 表示append追加）
+	usermod -a -G wheel lich0079（-a 表示append追加）
+25、rpm自动安装依赖包（--aid  当依赖包在当前目录下时自动安装依赖包）
+	rpm -ivh --aid httpd-2.0.52-25.ent.i386.rpm
 
 
 
